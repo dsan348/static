@@ -2,13 +2,11 @@
 pipeline {
      agents any
      stages {
-         stage ('Build') {
+         stage ('Upload to AWS') {
              Steps {
-                 sh 'echo "Hello World"'
-                 sh '''
-                     echo "Multiline shell steps works too"
-                     ls -lah
-                '''
+                  withAWS(credentials: 'aws-static', region: 'us-west-2') {
+                      s3Upload bucket: 'proj4', file: 'index.html'
+                  }          
             }
         }
     }
